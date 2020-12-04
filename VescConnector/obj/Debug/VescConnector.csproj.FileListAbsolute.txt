@@ -1,0 +1,14 @@
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\VescConnector.exe.config
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\VescConnector.exe
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\VescConnector.pdb
+D:\Рабочая\VescConnector\VescConnector\obj\Debug\VescConnector.csprojResolveAssemblyReference.cache
+D:\Рабочая\VescConnector\VescConnector\obj\Debug\MainWindow.g.cs
+D:\Рабочая\VescConnector\VescConnector\obj\Debug\App.g.cs
+D:\Рабочая\VescConnector\VescConnector\obj\Debug\VescConnector_MarkupCompile.cache
+D:\Рабочая\VescConnector\VescConnector\obj\Debug\VescConnector_MarkupCompile.lref
+D:\Рабочая\VescConnector\VescConnector\obj\Debug\MainWindow.baml
+D:\Рабочая\VescConnector\VescConnector\obj\Debug\VescConnector.g.resources
+D:\Рабочая\VescConnector\VescConnector\obj\Debug\VescConnector.Properties.Resources.resources
+D:\Рабочая\VescConnector\VescConnector\obj\Debug\VescConnector.csproj.GenerateResource.Cache
+D:\Рабочая\VescConnector\VescConnector\obj\Debug\VescConnector.exe
+D:\Рабочая\VescConnector\VescConnector\obj\Debug\VescConnector.pdb
