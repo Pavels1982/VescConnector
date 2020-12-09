@@ -1,6 +1,6 @@
 ﻿namespace VescConnector
 {
-    public class VescValues
+    public class VescData
     {
         public double Temp_mos { get; set; } = 0;
         public double Temp_motor { get; set; } = 0;

@@ -14,7 +14,7 @@ namespace VescConnector
         private SerialPort port = new SerialPort();
         private System.Threading.SynchronizationContext Current { get; } = System.Threading.SynchronizationContext.Current;
         public string StatusText { get; set; } = String.Empty;
-        public VescValues VescValues { get; set; }
+        public VescData VescData { get; set; }
                public List<string> GetAvailablePortList()
         {
             return SerialPort.GetPortNames().ToList();
@@ -22,7 +22,7 @@ namespace VescConnector
 
         public VescConnector()
         {
-            this.VescValues = new VescValues();                       
+            this.VescData = new VescData();                       
         }
 
         public  void Disconnect()
@@ -118,7 +118,7 @@ namespace VescConnector
 
                 case COMM_PACKET_ID.COMM_GET_VALUES:
                     {
-                        VescValues values = new VescValues(); ;
+                        VescData values = new VescData(); ;
                         values.Temp_mos = packet.PopFrontDouble16(1e1);
                         values.Temp_motor = packet.PopFrontDouble16(1e1);
                         values.Current_motor = packet.PopFrontDouble32(1e2);
@@ -143,7 +143,7 @@ namespace VescConnector
                             values.Pid_pos_now = -1.0;
                         }
                         values.Brake_count = packet.PopFrontInt32();
-                        VescValues = values;
+                        VescData = values;
                       //  UpdateVescValues(values);
                     }
                     break;
