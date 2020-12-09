@@ -3,3 +3,6 @@
 ################################################################################
 
 /.vs/VescConnector/v16/Server/sqlite3/storage.ide-wal
+/.vs/VescConnector/v16/Server/sqlite3/storage.ide-shm
+/.vs/VescConnector/v16/Server/sqlite3/storage.ide
+/.vs/VescConnector/v16/Server/sqlite3/db.lock

@@ -27,23 +27,17 @@ namespace VescConnector
 
         public float Duty { get; set; }
 
+        VescConnector vesc1 { get; set; } = new VescConnector();
+
         public MainWindow()
         {
-            SerialPortConnector.OnDataReceived += SerialPortConnector_OnDataReceived;
-            SerialPortConnector.OnStatusChanged += SerialPortConnector_OnStatusChanged;
-            InitializeComponent();
+           InitializeComponent();
             this.DataContext = this;
         }
 
         private void SerialPortConnector_OnStatusChanged(string message)
         {
             Status.Text += message + System.Environment.NewLine;
-        }
-
-        private void SerialPortConnector_OnDataReceived(ByteArray dataPacket)
-        {
-            Commands.ProcessPacket(dataPacket);
-
         }
 
         private void addReceiveTextToTextBlock(object text)
@@ -56,7 +50,7 @@ namespace VescConnector
         private void PortList_DropDownOpened(object sender, EventArgs e)
         {
             PortList.Items.Clear();
-            foreach (var item in SerialPortConnector.GetAvailablePortList())
+            foreach (var item in vesc1.GetAvailablePortList())
             {
                 PortList.Items.Add(item);
             }
@@ -65,7 +59,7 @@ namespace VescConnector
 
         private void ConnectPort_Click(object sender, RoutedEventArgs e)
         {
-            SerialPortConnector.Connect(PortList.SelectedValue as string);
+            vesc1.Connect(PortList.SelectedValue as string);
         }
 
         private void SendDutyButton_Click(object sender, RoutedEventArgs e)
@@ -75,12 +69,12 @@ namespace VescConnector
 
         private void GetVersion_Click(object sender, RoutedEventArgs e)
         {
-            Commands.GetFwVersion();
+            vesc1.GetFwVersion();
         }
 
         private void DisconnectPort_Click(object sender, RoutedEventArgs e)
         {
-            SerialPortConnector.Disconnect();
+            vesc1.Disconnect();
         }
     }
 
