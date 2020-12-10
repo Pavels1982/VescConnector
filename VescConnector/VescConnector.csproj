@@ -54,8 +54,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="VescConnector.cs" />
-    <Compile Include="VescData.cs" />
+    <Compile Include="VescConnector\VescConnector.cs" />
+    <Compile Include="VescConnector\VescData.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -64,15 +64,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ByteArray.cs" />
-    <Compile Include="DataTypes.cs" />
+    <Compile Include="VescConnector\ByteArray.cs" />
+    <Compile Include="VescConnector\DataTypes.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Packet.cs" />
+    <Compile Include="VescConnector\Packet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

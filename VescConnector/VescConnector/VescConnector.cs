@@ -6,23 +6,42 @@ using System.Threading.Tasks;
 using System.IO.Ports;
 using System.Windows;
 using static VescConnector.DataTypes;
+using System.Windows.Threading;
 
 namespace VescConnector
 {
-    public class VescConnector
+    public class Vesc
     {
         private SerialPort port = new SerialPort();
         private System.Threading.SynchronizationContext Current { get; } = System.Threading.SynchronizationContext.Current;
         public string StatusText { get; set; } = String.Empty;
+        private DispatcherTimer realDataTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(20) };
+
         public VescData VescData { get; set; }
                public List<string> GetAvailablePortList()
         {
             return SerialPort.GetPortNames().ToList();
         }
 
-        public VescConnector()
+        public Vesc()
         {
-            this.VescData = new VescData();                       
+            this.VescData = new VescData();
+            realDataTimer.Tick += RealDataTimer_Tick;
+        }
+
+        private void RealDataTimer_Tick(object sender, EventArgs e)
+        {
+            GetValues();
+        }
+
+        public void RealtomeDataOn()
+        {
+            if (!realDataTimer.IsEnabled) realDataTimer.Start();
+        }
+
+        public void RealtomeDataOff()
+        {
+            if (realDataTimer.IsEnabled) realDataTimer.Stop();
         }
 
         public  void Disconnect()
@@ -167,6 +186,14 @@ namespace VescConnector
         {
             ByteArray arr = new ByteArray();
             arr.AppendInt8((byte)COMM_PACKET_ID.COMM_FW_VERSION_REMOTION);
+            sendCommand(arr);
+        }
+
+
+        private void GetValues()
+        {
+            ByteArray arr = new ByteArray();
+            arr.AppendInt8((byte)COMM_PACKET_ID.COMM_GET_VALUES);
             sendCommand(arr);
         }
 

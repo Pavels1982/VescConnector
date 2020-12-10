@@ -12,3 +12,17 @@ D:\Рабочая\VescConnector\VescConnector\obj\Debug\VescConnector.Properties
 D:\Рабочая\VescConnector\VescConnector\obj\Debug\VescConnector.csproj.GenerateResource.Cache
 D:\Рабочая\VescConnector\VescConnector\obj\Debug\VescConnector.exe
 D:\Рабочая\VescConnector\VescConnector\obj\Debug\VescConnector.pdb
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector.csprojAssemblyReference.cache
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\MainWindow.g.cs
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\App.g.cs
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector_MarkupCompile.cache
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector_MarkupCompile.lref
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector.exe
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector.pdb
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\VescConnector.exe.config
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\VescConnector.exe
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\VescConnector.pdb
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\MainWindow.baml
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector.g.resources
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector.Properties.Resources.resources
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector.csproj.GenerateResource.cache

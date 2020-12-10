@@ -27,7 +27,7 @@ namespace VescConnector
 
         public float Duty { get; set; }
 
-        VescConnector vesc1 { get; set; } = new VescConnector();
+        Vesc vesc1 { get; set; } = new Vesc();
 
         public MainWindow()
         {
