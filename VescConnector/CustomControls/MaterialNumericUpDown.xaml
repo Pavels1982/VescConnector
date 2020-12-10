@@ -115,6 +115,7 @@
             Grid.Column="1"
             Grid.Row="1"
             IsEnabled="False"
+            Width="100"
             Text="{Binding RelativeSource={RelativeSource FindAncestor, 
                                  AncestorType={x:Type local:MaterialNumericUpDown}}, 
                                  Path=Value,Mode=TwoWay}"

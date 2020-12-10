@@ -8,17 +8,20 @@ using System.Windows;
 using static VescConnector.DataTypes;
 using System.Windows.Threading;
 using VescConnector;
+using System.ComponentModel;
 
 namespace VescConnector
 {
-    public class Vesc
+    public class Vesc: INotifyPropertyChanged
     {
         private SerialPort port = new SerialPort();
-        private System.Threading.SynchronizationContext Current { get; } = System.Threading.SynchronizationContext.Current;
+        private System.Threading.SynchronizationContext CurrentContext { get; } = System.Threading.SynchronizationContext.Current;
         public string StatusText { get; set; } = String.Empty;
         private DispatcherTimer realDataTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(20) };
 
-        private string selectedPort { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public string SelectedPort { get; set; }
 
         public RealTimeData RealTimeData { get; set; }
 
@@ -26,11 +29,25 @@ namespace VescConnector
 
         public List<string> PortList { get; set; }
 
+        public double Duty { get; set; }
 
-        public void SetPort(string portName)
+        public int RPM { get; set; }
+
+        public double Current { get; set; }
+
+        private bool isRealTimeData = false;
+        public bool IsRealTimeData 
         {
-            this.selectedPort = portName;
+            get => this.isRealTimeData;
+
+            set
+            {
+                this.isRealTimeData = value;
+                if (value) RealtimeDataOn();
+                else RealtimeDataOff();
+            }
         }
+
         public void GetAvailablePortList()
         {
             this.PortList.Clear();
@@ -51,12 +68,12 @@ namespace VescConnector
             GetValues();
         }
 
-        public void RealtimeDataOn()
+        private void RealtimeDataOn()
         {
             if (!realDataTimer.IsEnabled) realDataTimer.Start();
         }
 
-        public void RealtimeDataOff()
+        private void RealtimeDataOff()
         {
             if (realDataTimer.IsEnabled) realDataTimer.Stop();
         }
@@ -72,17 +89,17 @@ namespace VescConnector
 
         public void SetStatusMessage(string message)
         {
-            Current.Post(SendToContext, message);
+            CurrentContext.Post(SendToContext, message);
         }
 
         private void SendToContext(object obj)
         {
-            StatusText += obj as string + System.Environment.NewLine;
+            StatusText = obj as string;
         }
 
         public void Connect()
         {
-            string portName = this.selectedPort;
+            string portName = this.SelectedPort;
             if (!port.IsOpen && portName != null)
             {
                 port.PortName = portName;
@@ -222,10 +239,18 @@ namespace VescConnector
         }
 
 
+        public void SetCurrent(double current)
+        {
+            ByteArray arr = new ByteArray();
+            arr.AppendInt8((byte)COMM_PACKET_ID.COMM_SET_CURRENT);
+            arr.AppendDouble32(current,1e3);
+            sendCommand(arr);
+        }
 
-
-
-
-
+        public void Brake()
+        {
+            SetCurrent(0);
+            //SetDutyCycle(0);
+        }
     }
 }

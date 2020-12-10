@@ -13,6 +13,31 @@ namespace VescConnector.ViewModels
     {
         public ObservableCollection<Vesc> VescList { get; set; }= new ObservableCollection<Vesc>();
 
+        public ICommand SetDuty
+        {
+            get
+            {
+                return new RelayCommand<Vesc>((vesc) => vesc.SetDutyCycle(vesc.Duty));
+            }
+        }
+
+
+        public ICommand SetRPM
+        {
+            get
+            {
+                return new RelayCommand<Vesc>((vesc) => vesc.SetRpm(vesc.RPM));
+            }
+        }
+
+        public ICommand SetCurrent
+        {
+            get
+            {
+                return new RelayCommand<Vesc>((vesc) => vesc.SetCurrent(vesc.Current));
+            }
+        }
+
         public ICommand AddVesc
         {
             get
@@ -24,6 +49,48 @@ namespace VescConnector.ViewModels
                 });
             }
         }
+        public ICommand RefreshPorts
+        {
+            get
+            {
+                return new RelayCommand((o) =>
+                {
+                    foreach (var vesc in VescList)
+                    {
+                        vesc.GetAvailablePortList();
+                    }
+                });
+            }
+        }
+
+        public ICommand StopVescs
+        {
+            get
+            {
+                return new RelayCommand((o) =>
+                {
+
+                    foreach (var vesc in VescList)
+                    {
+                        vesc.Brake();
+                    }
+                });
+            }
+        }
+
+
+        public ICommand BrakeVesc
+        {
+            get
+            {
+                return new RelayCommand<Vesc>((vesc) =>
+                {
+
+                        vesc.Brake();
+                });
+            }
+        }
+
 
         public ICommand ConnectPort
         {

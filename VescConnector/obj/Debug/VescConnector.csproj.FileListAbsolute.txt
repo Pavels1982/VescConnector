@@ -36,3 +36,5 @@ C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector.
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector.csproj.CopyComplete
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector.exe
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector.pdb
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\PropertyChanged.dll
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\PropertyChanged.xml
