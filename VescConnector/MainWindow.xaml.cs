@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.IO.Ports;
 using System.Threading;
 using System.Diagnostics;
+using VescConnector.ViewModels;
 
 namespace VescConnector
 {
@@ -24,58 +25,13 @@ namespace VescConnector
     public partial class MainWindow : Window
     {
 
-
-        public float Duty { get; set; }
-
-        Vesc vesc1 { get; set; } = new Vesc();
-
-        public MainWindow()
+       public MainWindow()
         {
            InitializeComponent();
-            this.DataContext = this;
-        }
-
-        private void SerialPortConnector_OnStatusChanged(string message)
-        {
-            Status.Text += message + System.Environment.NewLine;
-        }
-
-        private void addReceiveTextToTextBlock(object text)
-        {
-            Status.Text += (text as string) + System.Environment.NewLine;
+            this.DataContext = new MainWindowViewModel();
         }
 
 
-
-        private void PortList_DropDownOpened(object sender, EventArgs e)
-        {
-            PortList.Items.Clear();
-            foreach (var item in vesc1.GetAvailablePortList())
-            {
-                PortList.Items.Add(item);
-            }
-        }
-
-
-        private void ConnectPort_Click(object sender, RoutedEventArgs e)
-        {
-            vesc1.Connect(PortList.SelectedValue as string);
-        }
-
-        private void SendDutyButton_Click(object sender, RoutedEventArgs e)
-        {
-            //   SerialPortConnector.SendData(Commands.SetDutyCycle(Duty));
-        }
-
-        private void GetVersion_Click(object sender, RoutedEventArgs e)
-        {
-            vesc1.GetFwVersion();
-        }
-
-        private void DisconnectPort_Click(object sender, RoutedEventArgs e)
-        {
-            vesc1.Disconnect();
-        }
     }
 
 

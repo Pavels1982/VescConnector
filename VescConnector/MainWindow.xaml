@@ -5,28 +5,81 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VescConnector"
         mc:Ignorable="d"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.Foreground = "{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         Title="MainWindow" Height="376.53" Width="624.545">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="340*"/>
-            <ColumnDefinition Width="83*"/>
-        </Grid.ColumnDefinitions>
-        <ComboBox  Name="PortList" HorizontalAlignment="Left" Margin="10,21,0,0" VerticalAlignment="Top" Width="193" Height="24" DropDownOpened="PortList_DropDownOpened" />
-        <Button Name="ConnectPort"  Content="Connect" HorizontalAlignment="Left" Margin="229,21,0,0" VerticalAlignment="Top" Width="75" Click="ConnectPort_Click"/>
-        <Button Name="DisconnectPort" Content="Disconnect" HorizontalAlignment="Left" Margin="324,21,0,0" VerticalAlignment="Top" Width="88" Click="DisconnectPort_Click" Grid.ColumnSpan="2"/>
-        <ScrollViewer Margin="10,50,8,74" Grid.ColumnSpan="2">
-            <TextBlock Name="Status" HorizontalAlignment="Left"  TextWrapping="Wrap" Text="" VerticalAlignment="Top"  />
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button 
+            Grid.Row="0"
+            Content="+ Add Device" 
+            Command="{Binding AddVesc}"
+            HorizontalAlignment="Left" 
+            Margin="5"/>
+
+        <ScrollViewer
+            Background="LightGray"
+            VerticalScrollBarVisibility="Auto"
+            Grid.Row="1">
+            <ItemsControl
+                ItemsSource="{Binding VescList}"
+                >
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Expander Margin="3">
+                            <Expander.Header>
+                                <UniformGrid Columns="2">
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        Margin="2"
+                                        Foreground="Black"
+                                        Text="{Binding Path=Info.Hw, StringFormat={}VESC HW: {0}}"/>
+                                    <StackPanel 
+                                        Grid.Column="1"
+                                        Orientation="Horizontal">
+                                        <ComboBox 
+                                            Margin="2"
+                                            Width="100" 
+                                            ItemsSource="{Binding Path=PortList}"/>
+                                        <Button
+                                             Margin="2"
+                                             Content="Connect"
+                                             Command="{Binding DataContext.ConnectPort, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                             CommandParameter="{Binding}"
+                                            />
+                                        <Button
+                                             Margin="2"
+                                             Content="Disconnect"
+                                             Command="{Binding DataContext.DisconnectPort, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                             CommandParameter="{Binding}"
+                                            />
+
+                                    </StackPanel>
+
+                                </UniformGrid>
+
+                            </Expander.Header>
+                            
+                        </Expander>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+
         </ScrollViewer>
-        <Button Name="SendDutyButton" HorizontalAlignment="Left" Margin="10,314,0,0" VerticalAlignment="Top" Width="75" Click="SendDutyButton_Click" >
-            <TextBlock>
-                <TextBlock.Text>
-                    <MultiBinding  StringFormat="{}Set Duty: {0:0.0}">
-                        <Binding ElementName="DutySlider" Path="Value" />
-                    </MultiBinding>
-                </TextBlock.Text>
-            </TextBlock>
-        </Button>
-        <Button Name="GetVersion" Content="GetVersion" HorizontalAlignment="Left" Margin="104,314,0,0" VerticalAlignment="Top" Width="76" Click="GetVersion_Click" />
-        <Slider Name ="DutySlider" Value="{Binding Duty, Mode=TwoWay}" Margin="192,314,62.5,0"/>
     </Grid>
+
+    
+    
+            
+    
+    
+
 </Window>

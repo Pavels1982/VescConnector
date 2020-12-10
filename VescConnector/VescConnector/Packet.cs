@@ -50,7 +50,7 @@ namespace VescConnector
         }
 
 
-        public static byte[]  GetPacket (byte[] data)
+        public static byte[]  Create (byte[] data)
         {
             
             List<byte> result = new List<byte>();
