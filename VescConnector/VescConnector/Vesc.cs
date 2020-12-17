@@ -17,7 +17,7 @@ namespace VescConnector
         private SerialPort port = new SerialPort();
         private System.Threading.SynchronizationContext CurrentContext { get; } = System.Threading.SynchronizationContext.Current;
         public string StatusText { get; set; } = String.Empty;
-        private DispatcherTimer realDataTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(20) };
+        private DispatcherTimer realDataTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(1) };
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -181,9 +181,9 @@ namespace VescConnector
                         values.Current_in = packet.PopFrontDouble32(1e2);
                         values.id = packet.PopFrontDouble32(1e2);
                         values.iq = packet.PopFrontDouble32(1e2);
-                        values.Duty_now = packet.PopFrontDouble16(1e3);
+                        values.Duty_now = packet.PopFrontDouble16(1e3) * 100;
                         values.Rpm = packet.PopFrontDouble32(1e0);
-                        values.V_in = packet.PopFrontDouble16(1e1);
+                        values.V_in = packet.PopFrontDouble16(1e1) * values.Current_in;
                         values.Amp_hours = packet.PopFrontDouble32(1e4);
                         values.Amp_hours_charged = packet.PopFrontDouble32(1e4);
                         values.Watt_hours = packet.PopFrontDouble32(1e4);
