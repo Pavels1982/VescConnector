@@ -34,19 +34,7 @@ namespace VescConnector
         public int RPM { get; set; }
 
         public double Current { get; set; }
-
-        private bool isRealTimeData = false;
-        public bool IsRealTimeData 
-        {
-            get => this.isRealTimeData;
-
-            set
-            {
-                this.isRealTimeData = value;
-                //if (value) RealtimeDataOn();
-                //else RealtimeDataOff();
-            }
-        }
+        public bool IsRealTimeData { get; set; }
 
         private ByteArray lastPacket;
 
@@ -68,7 +56,7 @@ namespace VescConnector
 
         private void RealDataTimer_Tick(object sender, EventArgs e)
         {
-            if (realDataTimer.IsEnabled) GetValues();
+            if (IsRealTimeData) GetValues();
             if (lastPacket != null) sendCommand(lastPacket);
         }
 
