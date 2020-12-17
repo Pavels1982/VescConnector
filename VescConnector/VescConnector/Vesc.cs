@@ -43,10 +43,12 @@ namespace VescConnector
             set
             {
                 this.isRealTimeData = value;
-                if (value) RealtimeDataOn();
-                else RealtimeDataOff();
+                //if (value) RealtimeDataOn();
+                //else RealtimeDataOff();
             }
         }
+
+        private ByteArray lastPacket;
 
         public void GetAvailablePortList()
         {
@@ -61,24 +63,26 @@ namespace VescConnector
             this.PortList = new List<string>();
             GetAvailablePortList();
             realDataTimer.Tick += RealDataTimer_Tick;
+            realDataTimer.Start();
         }
 
         private void RealDataTimer_Tick(object sender, EventArgs e)
         {
-            GetValues();
+            if (realDataTimer.IsEnabled) GetValues();
+            if (lastPacket != null) sendCommand(lastPacket);
         }
 
-        private void RealtimeDataOn()
-        {
-            if (!realDataTimer.IsEnabled) realDataTimer.Start();
-        }
+        //private void RealtimeDataOn()
+        //{
+        //    if (!realDataTimer.IsEnabled) realDataTimer.Start();
+        //}
 
-        private void RealtimeDataOff()
-        {
-            if (realDataTimer.IsEnabled) realDataTimer.Stop();
-        }
+        //private void RealtimeDataOff()
+        //{
+        //    if (realDataTimer.IsEnabled) realDataTimer.Stop();
+        // }
 
-        public  void Disconnect()
+        public void Disconnect()
         {
             if (port.IsOpen)
             {
@@ -181,7 +185,7 @@ namespace VescConnector
                         values.Current_in = packet.PopFrontDouble32(1e2);
                         values.id = packet.PopFrontDouble32(1e2);
                         values.iq = packet.PopFrontDouble32(1e2);
-                        values.Duty_now = packet.PopFrontDouble16(1e3) * 100;
+                        values.Duty_now = packet.PopFrontDouble16(1e3);
                         values.Rpm = packet.PopFrontDouble32(1e0);
                         values.V_in = packet.PopFrontDouble16(1e1) * values.Current_in;
                         values.Amp_hours = packet.PopFrontDouble32(1e4);
@@ -241,7 +245,8 @@ namespace VescConnector
             ByteArray arr = new ByteArray();
             arr.AppendInt8((byte)COMM_PACKET_ID.COMM_SET_DUTY);
             arr.AppendDouble32(dutyCycle, 1e5);
-            sendCommand(arr);
+            lastPacket = arr;
+            // sendCommand(arr);
         }
 
         public void SetRpm(int rpm)
@@ -249,7 +254,8 @@ namespace VescConnector
             ByteArray arr = new ByteArray();
             arr.AppendInt8((byte)COMM_PACKET_ID.COMM_SET_RPM);
             arr.AppendInt32(rpm);
-            sendCommand(arr);
+            lastPacket = arr;
+          //  sendCommand(arr);
         }
 
         public void GetFwVersion()
@@ -272,7 +278,8 @@ namespace VescConnector
             ByteArray arr = new ByteArray();
             arr.AppendInt8((byte)COMM_PACKET_ID.COMM_SET_CURRENT);
             arr.AppendDouble32(current,1e3);
-            sendCommand(arr);
+            lastPacket = arr;
+            // sendCommand(arr);
         }
 
         public void Brake()
