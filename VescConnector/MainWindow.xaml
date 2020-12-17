@@ -194,17 +194,26 @@
                                             <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_motor, StringFormat={}Temp_motor : {0} }"/>
                                             <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Current_motor, StringFormat={}Current_motor : {0} }"/>
                                             <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Current_in, StringFormat={}Current_in : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Encoder_in, StringFormat={}Encoder_in : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Encoder_out, StringFormat={}Encoder_out : {0} }"/>
+                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.id, StringFormat={}id : {0} }"/>
+                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.iq, StringFormat={}iq : {0} }"/>
                                             <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Duty_now, StringFormat={}Duty_now : {0} }"/>
                                             <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Rpm, StringFormat={}Rpm : {0} }"/>
                                             <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.V_in, StringFormat={}V_in : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Runout_value, StringFormat={}Runout_value : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Step_sensor, StringFormat={}Step_sensor : {0} }"/>
+                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Amp_hours, StringFormat={}Amp_hours : {0} }"/>
+                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Amp_hours_charged, StringFormat={}Amp_hours_charged : {0} }"/>
+                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Watt_hours, StringFormat={}Watt_hours : {0} }"/>
+                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Watt_hours_charged, StringFormat={}Watt_hours_charged : {0} }"/>
+                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Tachometer, StringFormat={}Tachometer : {0} }"/>
+                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Tachometer_abs, StringFormat={}Tachometer_abs : {0} }"/>
                                             <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Fault_code, StringFormat={}Fault_code : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Pid_pos_set, StringFormat={}Pid_pos_set : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Pid_pos_now, StringFormat={}Pid_pos_now : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Brake_count, StringFormat={}Brake_count : {0} }"/>
+                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Fault_str, StringFormat={}Fault_str : {0} }"/>
+                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Position, StringFormat={}Position : {0} }"/>
+                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Vesc_id, StringFormat={}Vesc_id : {0} }"/>
+                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_mos_1, StringFormat={}Temp_mos_1 : {0} }"/>
+                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_mos_2, StringFormat={}Temp_mos_2 : {0} }"/>
+                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_mos_3, StringFormat={}Temp_mos_3 : {0} }"/>
+                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.vd, StringFormat={}vd : {0} }"/>
+                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.vq, StringFormat={}vq : {0} }"/>
                                         </WrapPanel>
                                     </StackPanel>
 

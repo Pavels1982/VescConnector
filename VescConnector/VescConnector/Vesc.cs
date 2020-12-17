@@ -153,7 +153,7 @@ namespace VescConnector
 
             switch (id)
             {
-                case COMM_PACKET_ID.COMM_FW_VERSION_REMOTION:
+                case COMM_PACKET_ID.COMM_FW_VERSION:
                     {
                         int fw_major = 0;
                         int fw_minor = 0;
@@ -173,30 +173,58 @@ namespace VescConnector
                 case COMM_PACKET_ID.COMM_GET_VALUES:
                     {
                         RealTimeData values = new RealTimeData(); ;
+                       // UInt32 mask = (uint)(0xFFFFFFFF);
+                                       
                         values.Temp_mos = packet.PopFrontDouble16(1e1);
                         values.Temp_motor = packet.PopFrontDouble16(1e1);
                         values.Current_motor = packet.PopFrontDouble32(1e2);
                         values.Current_in = packet.PopFrontDouble32(1e2);
-                        values.Encoder_in = (double)packet.PopFrontInt32() / 16384.0 * 360.0;
-                        values.Encoder_out = (double)packet.PopFrontInt32() / 16384.0 * 360.0;
+                        values.id = packet.PopFrontDouble32(1e2);
+                        values.iq = packet.PopFrontDouble32(1e2);
                         values.Duty_now = packet.PopFrontDouble16(1e3);
                         values.Rpm = packet.PopFrontDouble32(1e0);
-                        values.V_in = packet.PopFrontDouble16(1e2);
-                        values.Runout_value = packet.PopFrontDouble32(1e2);
-                        values.Step_sensor = packet.PopFrontUInt8();
+                        values.V_in = packet.PopFrontDouble16(1e1);
+                        values.Amp_hours = packet.PopFrontDouble32(1e4);
+                        values.Amp_hours_charged = packet.PopFrontDouble32(1e4);
+                        values.Watt_hours = packet.PopFrontDouble32(1e4);
+                        values.Watt_hours_charged = packet.PopFrontDouble32(1e4);
+                        values.Tachometer = packet.PopFrontInt32();
+                        values.Tachometer_abs = packet.PopFrontInt32();
+
                         values.Fault_code = packet.PopFrontInt8();
                         values.Fault_str = values.Fault_code.ToString();
-                        values.Pid_pos_set = packet.PopFrontDouble32(1e6);
 
                         if (packet.Size() >= 4)
                         {
-                            values.Pid_pos_now = packet.PopFrontDouble32(1e6);
+                            values.Position = packet.PopFrontDouble32(1e6);
                         }
                         else
                         {
-                            values.Pid_pos_now = -1.0;
+                            values.Position = -1.0;
                         }
-                        values.Brake_count = packet.PopFrontInt32();
+
+                        if (packet.Size() >= 1)
+                        {
+                            values.Vesc_id = packet.PopFrontInt8();
+                        }
+                        else
+                        {
+                            values.Vesc_id = 255;
+                        }
+
+                        if (packet.Size() >= 6)
+                        {
+                            values.Temp_mos_1 = packet.PopFrontDouble16(1e1);
+                            values.Temp_mos_2 = packet.PopFrontDouble16(1e1);
+                            values.Temp_mos_3 = packet.PopFrontDouble16(1e1);
+                        }
+
+                        if (packet.Size() >= 8)
+                        {
+                            values.vd = packet.PopFrontDouble16(1e3);
+                            values.vq = packet.PopFrontDouble16(1e3);
+
+                        }
                         RealTimeData = values;
                     }
                     break;
@@ -227,7 +255,7 @@ namespace VescConnector
         public void GetFwVersion()
         {
             ByteArray arr = new ByteArray();
-            arr.AppendInt8((byte)COMM_PACKET_ID.COMM_FW_VERSION_REMOTION);
+            arr.AppendInt8((byte)COMM_PACKET_ID.COMM_FW_VERSION);
             sendCommand(arr);
         }
 

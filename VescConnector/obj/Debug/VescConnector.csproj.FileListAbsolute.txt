@@ -38,3 +38,14 @@ C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector.
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector.pdb
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\PropertyChanged.dll
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\PropertyChanged.xml
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\MaterialDesignColors.dll
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\MaterialDesignThemes.Wpf.dll
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\PropertyChanged.dll
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\MaterialDesignColors.pdb
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\MaterialDesignThemes.Wpf.pdb
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\MaterialDesignThemes.Wpf.xml
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\PropertyChanged.xml
+D:\Рабочая\VescConnector\VescConnector\obj\Debug\CustomControls\MaterialNumericUpDown.g.cs
+D:\Рабочая\VescConnector\VescConnector\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Рабочая\VescConnector\VescConnector\obj\Debug\App.baml
+D:\Рабочая\VescConnector\VescConnector\obj\Debug\CustomControls\MaterialNumericUpDown.baml
