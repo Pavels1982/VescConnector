@@ -145,6 +145,7 @@ namespace VescConnector
                 port.Parity = Parity.None;
                 port.StopBits = StopBits.One;
                 port.RtsEnable = true;
+              //  port.Encoding = Encoding.UTF8;
                 port.DataReceived += Port_DataReceived;
                 port.ErrorReceived += Port_ErrorReceived;
                 try
@@ -178,6 +179,7 @@ namespace VescConnector
         private void Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             SerialPort sp = (SerialPort)sender;
+           // ProcessPacket(new ByteArray(sp.));
             ProcessPacket(new ByteArray(sp.ReadExisting()));
         }
 
@@ -222,7 +224,8 @@ namespace VescConnector
                         values.id = packet.PopFrontDouble32(1e2);
                         values.iq = packet.PopFrontDouble32(1e2);
                         values.Duty_now = packet.PopFrontDouble16(1e3);
-                        values.Rpm = packet.PopFrontDouble32(1e0)/11;
+
+                        values.Rpm = packet.PopFrontDouble32(1e0) / 11;
                         values.V_in = packet.PopFrontDouble16(1e1) * values.Current_in;
                         values.Amp_hours = packet.PopFrontDouble32(1e4);
                         values.Amp_hours_charged = packet.PopFrontDouble32(1e4);

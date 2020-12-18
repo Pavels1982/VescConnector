@@ -32,7 +32,7 @@ namespace VescConnector
 
         public ByteArray(string data)
         {
-            this.data = Encoding.ASCII.GetBytes(data).ToList();
+            this.data = Encoding.Default.GetBytes(data).ToList();
         }
         #endregion
 
@@ -184,7 +184,7 @@ namespace VescConnector
 
         public double PopFrontDouble16(double scale)
         {
-            return (double)PopFrontInt16() / scale;
+            return PopFrontInt16() / scale;
         }
 
         public string PopFrontString()
