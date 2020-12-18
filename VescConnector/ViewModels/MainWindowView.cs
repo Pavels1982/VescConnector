@@ -17,10 +17,22 @@ namespace VescConnector.ViewModels
         {
             get
             {
-                return new RelayCommand<Vesc>((vesc) => vesc.SetDutyCycle(vesc.Duty));
+                return new RelayCommand<Vesc>((vesc) =>
+                {
+                    vesc.SlowDown(false);
+                    vesc.SetDutyCycle(vesc.Duty);
+                });
             }
         }
 
+
+        public ICommand SlowDown
+        {
+            get
+            {
+                return new RelayCommand<Vesc>((vesc) => vesc.SlowDown(true));
+            }
+        }
 
         public ICommand SetRPM
         {
@@ -34,7 +46,11 @@ namespace VescConnector.ViewModels
         {
             get
             {
-                return new RelayCommand<Vesc>((vesc) => vesc.SetCurrent(vesc.Current));
+                return new RelayCommand<Vesc>((vesc) =>
+                {
+               
+                    vesc.SetCurrent(vesc.Current);
+                    });
             }
         }
 

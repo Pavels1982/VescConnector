@@ -12,7 +12,7 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-        Title="MainWindow" Height="376.53" Width="624.545">
+        Title="MainWindow" Height="576.53" Width="824.545">
     <Grid>
 
         <Grid.RowDefinitions>
@@ -129,7 +129,7 @@
                                         >
                                         <materialDesign:PackIcon Kind="Send"  Width="25" Height="25"/>
                                     </Button>
-                                    <TextBlock 
+                                    <!--<TextBlock 
                                          Margin="5"
                                         Text="RPM : "/>
                                     <TextBox
@@ -164,7 +164,26 @@
                                         CommandParameter="{Binding}"
                                         >
                                         <materialDesign:PackIcon Kind="Send"  Width="25" Height="25"/>
+                                    </Button>-->
+                                    <TextBlock 
+                                       Margin="5"
+                                       Text="Slowdown : "/>
+                                    <TextBox
+                                        Margin="5"
+                                        Width="50"
+                                        Grid.Row="0"
+                                        materialDesign:HintAssist.Hint="RPM"
+                                        Style="{StaticResource MaterialDesignTextBox}"
+                                        Text="{Binding Path=SlowDownValue, Mode=TwoWay}"/>
+                                    <Button 
+                                        Margin="5"
+                                        Background="Green"
+                                        Command="{Binding DataContext.SlowDown, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                        CommandParameter="{Binding}"
+                                        >
+                                        <materialDesign:PackIcon Kind="SpeedometerSlow"  Width="25" Height="25"/>
                                     </Button>
+
                                     <Button 
                                         Margin="5"
                                         Background="Red"
@@ -173,6 +192,13 @@
                                         >
                                         <materialDesign:PackIcon Kind="Stop"  Width="25" Height="25"/>
                                     </Button>
+                                    
+                                    <ComboBox 
+                                            SelectedItem="{Binding Path=SynchVesc}"
+                                            Margin="2 2 40 2"
+                                            Width="150" 
+                                            ItemsSource="{Binding DataContext.VescList, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>
+
 
                                 </StackPanel>
 

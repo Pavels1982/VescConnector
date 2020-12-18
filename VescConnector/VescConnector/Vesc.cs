@@ -9,19 +9,24 @@ using static VescConnector.DataTypes;
 using System.Windows.Threading;
 using VescConnector;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace VescConnector
 {
-    public class Vesc: INotifyPropertyChanged
+    public class Vesc : INotifyPropertyChanged
     {
         private SerialPort port = new SerialPort();
         private System.Threading.SynchronizationContext CurrentContext { get; } = System.Threading.SynchronizationContext.Current;
         public string StatusText { get; set; } = String.Empty;
         private DispatcherTimer realDataTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(1) };
 
+        private bool slowDown;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string SelectedPort { get; set; }
+        private double currentDuty;
+        public double SlowDownValue { get; set; }
 
         public RealTimeData RealTimeData { get; set; }
 
@@ -34,7 +39,7 @@ namespace VescConnector
         public int RPM { get; set; }
 
         public double Current { get; set; }
-        public bool IsRealTimeData { get; set; }
+        public bool IsRealTimeData { get; set; } = true;
 
         private ByteArray lastPacket;
 
@@ -43,6 +48,9 @@ namespace VescConnector
             this.PortList.Clear();
             this.PortList = SerialPort.GetPortNames().ToList();
         }
+        private Stopwatch timeWatcher = new Stopwatch();
+        private double deltaTime = 0;
+        public Vesc SynchVesc { get; set; }
 
         public Vesc()
         {
@@ -52,13 +60,49 @@ namespace VescConnector
             GetAvailablePortList();
             realDataTimer.Tick += RealDataTimer_Tick;
             realDataTimer.Start();
+            timeWatcher.Start();
         }
 
         private void RealDataTimer_Tick(object sender, EventArgs e)
         {
+            deltaTime = timeWatcher.ElapsedTicks;
             if (IsRealTimeData) GetValues();
-            if (lastPacket != null) sendCommand(lastPacket);
+
+            if (lastPacket != null && SynchVesc == null)
+            {
+                if (slowDown)
+                {
+                    if (RealTimeData.Duty_now != 0)
+                    {
+                        currentDuty = currentDuty < 0.0 ? currentDuty + (10d / deltaTime) : currentDuty - (10d / deltaTime);
+                        SetDutyCycle(currentDuty);
+                        sendCommand(lastPacket);
+                        //  Debug.WriteLine(currentDuty);
+                    }
+                    else slowDown = false;
+                }
+                else
+                    sendCommand(lastPacket);
+
+            }
+            else if (SynchVesc != null)
+            {
+
+                if (SynchVesc.IsRealTimeData && SynchVesc.IsConnected)
+                {
+                    if (SynchVesc.RealTimeData.Duty_now != 0)
+                    {
+                        double duty = -SynchVesc.RealTimeData.Rpm * 0.000545d;
+                        SetDutyCycle(duty);
+                        sendCommand(lastPacket);
+                       // Debug.WriteLine(duty);
+                    }
+                }
+            }
+            timeWatcher.Restart();
         }
+
+        public bool IsConnected;
 
         //private void RealtimeDataOn()
         //{
@@ -76,6 +120,7 @@ namespace VescConnector
             {
                 port.Close();
                 SetStatusMessage("Порт закрыт.");
+                IsConnected = false;
             }
         }
 
@@ -111,6 +156,7 @@ namespace VescConnector
                 catch
                 {
                     SetStatusMessage("Порт занят.");
+                    IsConnected = false;
                 }
             }
         }
@@ -155,7 +201,9 @@ namespace VescConnector
                         {
                             fw_major = packet.PopFrontInt8();
                             fw_minor = packet.PopFrontInt8();
-                            hw = packet.PopFrontString();
+                            hw = packet.PopFrontUInt16().ToString();
+                            // hw = packet.PopFrontString();
+                            IsConnected = true;
                         }
                         SetStatusMessage(string.Format("Firmware Version:{0}.{1} UUID:{2} ", fw_major, fw_minor, hw));
                         this.Info.Hw = hw;
@@ -174,7 +222,7 @@ namespace VescConnector
                         values.id = packet.PopFrontDouble32(1e2);
                         values.iq = packet.PopFrontDouble32(1e2);
                         values.Duty_now = packet.PopFrontDouble16(1e3);
-                        values.Rpm = packet.PopFrontDouble32(1e0);
+                        values.Rpm = packet.PopFrontDouble32(1e0)/11;
                         values.V_in = packet.PopFrontDouble16(1e1) * values.Current_in;
                         values.Amp_hours = packet.PopFrontDouble32(1e4);
                         values.Amp_hours_charged = packet.PopFrontDouble32(1e4);
@@ -230,6 +278,7 @@ namespace VescConnector
 
         public void SetDutyCycle(double dutyCycle)
         {
+            currentDuty = dutyCycle;
             ByteArray arr = new ByteArray();
             arr.AppendInt8((byte)COMM_PACKET_ID.COMM_SET_DUTY);
             arr.AppendDouble32(dutyCycle, 1e5);
@@ -273,7 +322,13 @@ namespace VescConnector
         public void Brake()
         {
             SetCurrent(0);
+            slowDown = false;
             //SetDutyCycle(0);
+        }
+
+        public void SlowDown(bool value)
+        {
+            slowDown = value;
         }
     }
 }
