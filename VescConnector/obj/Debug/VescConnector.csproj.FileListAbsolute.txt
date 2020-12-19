@@ -49,3 +49,7 @@ D:\Рабочая\VescConnector\VescConnector\obj\Debug\CustomControls\MaterialN
 D:\Рабочая\VescConnector\VescConnector\obj\Debug\GeneratedInternalTypeHelper.g.cs
 D:\Рабочая\VescConnector\VescConnector\obj\Debug\App.baml
 D:\Рабочая\VescConnector\VescConnector\obj\Debug\CustomControls\MaterialNumericUpDown.baml
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\Microsoft.Expression.Interactions.dll
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\Microsoft.Expression.Interactions.xml
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\System.Windows.Interactivity.xml

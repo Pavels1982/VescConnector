@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VescConnector"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:customControls="clr-namespace:VescConnector.CustomControls"
         mc:Ignorable="d"
         Background="{DynamicResource MaterialDesignPaper}"
@@ -129,24 +130,55 @@
                                     Orientation="Horizontal" Margin="10"
                                     HorizontalAlignment="Center"
                                     >
-                                    
-                                    <TextBlock 
-                                         Margin="5"
-                                        Text="Duty : "/>
-                                    <TextBox
-                                        Margin="5"
-                                        Width="50"
-                                        Grid.Row="0"
-                                        materialDesign:HintAssist.Hint="Duty"
-                                        Style="{StaticResource MaterialDesignTextBox}"
-                                        Text="{Binding Path=Duty, Mode=TwoWay}"/>
-                                    <Button
+
+                                    <!--<Button
                                         Margin="2"
                                         
                                         Command="{Binding DataContext.SetDuty, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                         CommandParameter="{Binding}"
                                         >
                                         <materialDesign:PackIcon Kind="Send"  Width="25" Height="25"/>
+                                    </Button>-->
+
+                                    <Button
+                                        Background="Green"
+                                        Margin="2">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                                <i:InvokeCommandAction Command="{Binding Path=DataContext.StartReverseDuty, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                            <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                                <i:InvokeCommandAction Command="{Binding Path=DataContext.StopDuty, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <materialDesign:PackIcon Kind="ArrowLeft"  Width="25" Height="25"/>
+                                    </Button>
+
+
+                                    <!--<TextBlock 
+                                         Margin="5"
+                                        Text="{Binding Path=Duty, StringFormat={}Duty : {0:0.####},Mode=TwoWay}"/>-->
+                                    <TextBox
+                                        Margin="5"
+                                        Width="50"
+                                        IsEnabled="False"
+                                        Grid.Row="0"
+                                        materialDesign:HintAssist.Hint="Duty"
+                                        Style="{StaticResource MaterialDesignTextBox}"
+                                        Text="{Binding Path=Duty, Mode=TwoWay}"/>
+
+                                    <Button
+                                        Background="Green"
+                                        Margin="2">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                                <i:InvokeCommandAction Command="{Binding Path=DataContext.StartForwardDuty, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                            <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                                <i:InvokeCommandAction Command="{Binding Path=DataContext.StopDuty, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <materialDesign:PackIcon Kind="ArrowRight"  Width="25" Height="25"/>
                                     </Button>
                                     <!--<TextBlock 
                                          Margin="5"
@@ -184,7 +216,7 @@
                                         >
                                         <materialDesign:PackIcon Kind="Send"  Width="25" Height="25"/>
                                     </Button>-->
-                                    <TextBlock 
+                                    <!--<TextBlock 
                                        Margin="5"
                                        Text="Slowdown : "/>
                                     <TextBox
@@ -201,11 +233,12 @@
                                         CommandParameter="{Binding}"
                                         >
                                         <materialDesign:PackIcon Kind="SpeedometerSlow"  Width="25" Height="25"/>
-                                    </Button>
+                                    </Button>-->
 
                                     <Button 
                                         Margin="5"
                                         Background="Red"
+                                        
                                         Command="{Binding DataContext.BrakeVesc, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                         CommandParameter="{Binding}"
                                         >

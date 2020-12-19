@@ -31,7 +31,10 @@ namespace VescConnector
             this.DataContext = new MainWindowViewModel();
         }
 
-
+        private void Button_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Debug.WriteLine("f");
+        }
     }
 
 

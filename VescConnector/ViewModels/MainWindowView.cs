@@ -19,18 +19,40 @@ namespace VescConnector.ViewModels
             {
                 return new RelayCommand<Vesc>((vesc) =>
                 {
-                    vesc.SlowDown(false);
+                  
                     vesc.SetDutyCycle(vesc.Duty);
                 });
             }
         }
 
-
-        public ICommand SlowDown
+        public ICommand StartForwardDuty
         {
             get
             {
-                return new RelayCommand<Vesc>((vesc) => vesc.SlowDown(true));
+                return new RelayCommand<Vesc>((vesc) =>
+                {
+                    vesc.StartForwardDutyCycle();
+                });
+            }
+        }
+        public ICommand StartReverseDuty
+        {
+            get
+            {
+                return new RelayCommand<Vesc>((vesc) =>
+                {
+                    vesc.StartReverseDutyCycle();
+                });
+            }
+        }
+        public ICommand StopDuty
+        {
+            get
+            {
+                return new RelayCommand<Vesc>((vesc) =>
+                {
+                    vesc.StopDutyCycle();
+                });
             }
         }
 

@@ -16,13 +16,15 @@ namespace VescConnector
     public class Vesc : INotifyPropertyChanged
     {
         public int ID { get; set; }
+        public bool NegativeRotation { get; set; }
+
         public string Name => string.Format("VESC ID: {0}", ID);
         private SerialPort port = new SerialPort();
         private System.Threading.SynchronizationContext CurrentContext { get; } = System.Threading.SynchronizationContext.Current;
         public string StatusText { get; set; } = String.Empty;
-        private DispatcherTimer realDataTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(1) };
+        private DispatcherTimer realDataTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(10) };
 
-        private bool slowDown;
+        private DispatcherTimer DutyTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(10) };
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -64,28 +66,26 @@ namespace VescConnector
             realDataTimer.Tick += RealDataTimer_Tick;
             realDataTimer.Start();
             timeWatcher.Start();
+            DutyTimer.Tick += DutyTimer_Tick;
         }
+
+       
 
         private void RealDataTimer_Tick(object sender, EventArgs e)
         {
-            deltaTime = timeWatcher.ElapsedTicks;
+            deltaTime = 0.005d / realDataTimer.Interval.TotalMilliseconds;
             if (IsRealTimeData) GetValues();
 
             if (lastPacket != null && SynchVesc == null)
-            {
-                if (slowDown)
                 {
-                    if (RealTimeData.Duty_now != 0)
-                    {
-                        currentDuty = currentDuty < 0.0 ? currentDuty + (10d / deltaTime) : currentDuty - (10d / deltaTime);
-                        SetDutyCycle(currentDuty);
-                        sendCommand(lastPacket);
-                        //  Debug.WriteLine(currentDuty);
-                    }
-                    else slowDown = false;
-                }
-                else
-                    sendCommand(lastPacket);
+
+                //   if (RealTimeData.Duty_now != 0)
+                   if (Duty != 0.0d)
+                   {
+                      currentDuty += currentDuty < 0.0 ? deltaTime : -deltaTime;
+                      SetDutyCycle(currentDuty);
+                      sendCommand(lastPacket);
+                   }
 
             }
             else if (SynchVesc != null)
@@ -98,11 +98,11 @@ namespace VescConnector
                         double duty = -SynchVesc.RealTimeData.Rpm * 0.000545d;
                         SetDutyCycle(duty);
                         sendCommand(lastPacket);
-                       // Debug.WriteLine(duty);
                     }
                 }
             }
-            timeWatcher.Restart();
+            Duty = currentDuty;
+            //timeWatcher.Restart();
         }
 
         public bool IsConnected;
@@ -281,10 +281,38 @@ namespace VescConnector
         {
             SendData(packet);
         }
+        public void StartForwardDutyCycle()
+        {
+            this.NegativeRotation = false;
+            DutyTimer.Start();
+        }
+        public void StartReverseDutyCycle()
+        {
+            this.NegativeRotation = true;
+            DutyTimer.Start();
+        }
+
+        public void StopDutyCycle()
+        {
+            DutyTimer.Stop();
+        }
+
+        private void DutyTimer_Tick(object sender, EventArgs e)
+        {
+            currentDuty = NegativeRotation && Math.Abs(currentDuty) < 0.7d ? currentDuty - (0.02d / DutyTimer.Interval.TotalMilliseconds) : currentDuty + (0.02d / DutyTimer.Interval.TotalMilliseconds);
+            ByteArray arr = new ByteArray();
+            arr.AppendInt8((byte)COMM_PACKET_ID.COMM_SET_DUTY);
+            arr.AppendDouble32(currentDuty, 1e5);
+            lastPacket = arr;
+            Duty = currentDuty;
+        }
+
+
 
         public void SetDutyCycle(double dutyCycle)
         {
-            currentDuty = dutyCycle;
+            if (Math.Abs(dutyCycle) > 0.6d) return;
+          //  currentDuty = dutyCycle < 0.0 ? currentDuty - (1d / deltaTime) : currentDuty + (1d / deltaTime);
             ByteArray arr = new ByteArray();
             arr.AppendInt8((byte)COMM_PACKET_ID.COMM_SET_DUTY);
             arr.AppendDouble32(dutyCycle, 1e5);
@@ -328,14 +356,10 @@ namespace VescConnector
         public void Brake()
         {
             SetCurrent(0);
-            slowDown = false;
-
+            currentDuty = 0;
             //SetDutyCycle(0);
         }
 
-        public void SlowDown(bool value)
-        {
-            slowDown = value;
-        }
+
     }
 }
