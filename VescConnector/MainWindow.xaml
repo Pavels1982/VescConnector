@@ -58,12 +58,23 @@
                                 <UniformGrid Columns="2">
                                     <StackPanel Grid.Column="0" Orientation="Vertical">
 
-                                        <TextBlock
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock
                                         Grid.Column="0"
                                         Margin="2"
                                         Foreground="Black"
-                                        Text="{Binding Path=Info.Hw, StringFormat={}VESC HW: {0}}"/>
+                                        Text="{Binding Path=ID, StringFormat={}VESC ID: {0}}"/>
+
+                                            <TextBlock
+                                        Grid.Column="0"
+                                        Margin="2"
+                                        Foreground="Black"
+                                        Text="{Binding Path=Info.Hw, StringFormat={}  HW: {0}}"/>
+
+                                        </StackPanel>
                                         <Label Content="{Binding Path=StatusText, Mode=TwoWay}"/>
+
 
                                     </StackPanel>
                                     
@@ -89,6 +100,14 @@
                                              Command="{Binding DataContext.DisconnectPort, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                              CommandParameter="{Binding}"
                                             />
+                                        <Button
+                                             Margin="2"
+                                             Command="{Binding DataContext.RemoveVesc, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                             CommandParameter="{Binding}">
+                                            <materialDesign:PackIcon Kind="Delete"  Width="25" Height="25"/>
+                                        </Button>
+
+
                                     </StackPanel>
                                 </UniformGrid>
                             </Expander.Header>
@@ -195,6 +214,7 @@
                                     
                                     <ComboBox 
                                             SelectedItem="{Binding Path=SynchVesc}"
+                                            DisplayMemberPath="Name"
                                             Margin="2 2 40 2"
                                             Width="150" 
                                             ItemsSource="{Binding DataContext.VescList, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>

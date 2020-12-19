@@ -60,8 +60,21 @@ namespace VescConnector.ViewModels
             {
                 return new RelayCommand((o) =>
                 {
-                    VescList.Add(new Vesc());
+                    int newId = 0;
+                    if (VescList.Count > 0)
+                        newId = VescList.OrderBy(vesc => vesc.ID).Last().ID + 1;
+                    VescList.Add(new Vesc(newId));
 
+                });
+            }
+        }
+        public ICommand RemoveVesc
+        {
+            get
+            {
+                return new RelayCommand<Vesc>((vesc) =>
+                {
+                    VescList.Remove(vesc);
                 });
             }
         }
@@ -131,7 +144,20 @@ namespace VescConnector.ViewModels
 
         public MainWindowViewModel()
         {
-            
+            //double duty1 = -0.1d * 1e3;
+
+
+            //byte[] str = BitConverter.GetBytes(duty1);
+
+
+            //Int64 res = (((Int64)str[7] << 56 ) | ((Int64)str[6]) << 48);
+           
+            //byte[] y = BitConverter.GetBytes(res);
+
+            //double total = (double)(BitConverter.Int64BitsToDouble(res) / 1e3);
+
+            //byte[] str3 = BitConverter.GetBytes(total);
+           
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -15,6 +15,8 @@ namespace VescConnector
 {
     public class Vesc : INotifyPropertyChanged
     {
+        public int ID { get; set; }
+        public string Name => string.Format("VESC ID: {0}", ID);
         private SerialPort port = new SerialPort();
         private System.Threading.SynchronizationContext CurrentContext { get; } = System.Threading.SynchronizationContext.Current;
         public string StatusText { get; set; } = String.Empty;
@@ -52,8 +54,9 @@ namespace VescConnector
         private double deltaTime = 0;
         public Vesc SynchVesc { get; set; }
 
-        public Vesc()
+        public Vesc(int id)
         {
+            this.ID = id;
             this.RealTimeData = new RealTimeData();
             this.Info = new VescInfo();
             this.PortList = new List<string>();
@@ -318,14 +321,15 @@ namespace VescConnector
             ByteArray arr = new ByteArray();
             arr.AppendInt8((byte)COMM_PACKET_ID.COMM_SET_CURRENT);
             arr.AppendDouble32(current,1e3);
-            lastPacket = arr;
-            // sendCommand(arr);
+            sendCommand(arr);
+            lastPacket = null;
         }
 
         public void Brake()
         {
             SetCurrent(0);
             slowDown = false;
+
             //SetDutyCycle(0);
         }
 
