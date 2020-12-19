@@ -18,7 +18,6 @@ C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\App.g.cs
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector_MarkupCompile.cache
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector_MarkupCompile.lref
-C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector.csprojAssemblyReference.cache
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\VescConnector.exe.config
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\VescConnector.exe
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\VescConnector.pdb
@@ -53,3 +52,8 @@ C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\Microsoft.Expr
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\System.Windows.Interactivity.dll
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\Microsoft.Expression.Interactions.xml
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\System.Windows.Interactivity.xml
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\OxyPlot.dll
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\OxyPlot.Wpf.dll
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\OxyPlot.xml
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\OxyPlot.Wpf.xml
+C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector.csprojAssemblyReference.cache

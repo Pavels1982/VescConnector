@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:VescConnector"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:customControls="clr-namespace:VescConnector.CustomControls"
         mc:Ignorable="d"
         Background="{DynamicResource MaterialDesignPaper}"
@@ -15,115 +16,129 @@
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         Title="MainWindow" Height="576.53" Width="824.545">
     <Grid>
-
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.3*"/>
+            <RowDefinition Height="0.7*"/>
         </Grid.RowDefinitions>
-        <Button 
+        <oxy:PlotView 
+            Margin="10"
+            Grid.Row="0"
+            Grid.Column="0"
+    
+            Model="{Binding Chart.Model}"/>
+
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Button 
             Grid.Row="0"
             Content="+ Add Device" 
             Command="{Binding AddVesc}"
             HorizontalAlignment="Left" 
             Margin="5"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button
             Margin="2"
             Style="{StaticResource MaterialDesignFlatButton}"
             Command="{Binding RefreshPorts}"
             >
-            <materialDesign:PackIcon Kind="Refresh"  Width="25" Height="25"/>
-        </Button>
-            
-        <Button 
+                        <materialDesign:PackIcon Kind="Refresh"  Width="25" Height="25"/>
+                    </Button>
+
+                    <Button 
             Margin="2"
             Style="{StaticResource MaterialDesignFlatButton}"
             Command="{Binding StopVescs}"
                    >
-            <materialDesign:PackIcon Kind="Stop"  Width="25" Height="25"/>
-        </Button>
-        </StackPanel>
+                        <materialDesign:PackIcon Kind="Stop"  Width="25" Height="25"/>
+                    </Button>
+                </StackPanel>
 
 
-        <ScrollViewer
+                <ScrollViewer
             Background="LightGray"
             VerticalScrollBarVisibility="Auto"
             Grid.Row="1">
-            <ItemsControl
+                    <ItemsControl
                 ItemsSource="{Binding VescList, Mode=TwoWay}"
                 >
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Expander Margin="3">
-                            <Expander.Header>
-                                <UniformGrid Columns="2">
-                                    <StackPanel Grid.Column="0" Orientation="Vertical">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Expander Margin="3">
+                                    <Expander.Header>
+                                        <UniformGrid Columns="2">
+                                            <StackPanel Grid.Column="0" Orientation="Vertical">
 
 
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock
+                                                <StackPanel Orientation="Horizontal">
+                                                <Rectangle Width="20" Height="20" Fill="{Binding Path=ChartColor}"/>
+
+                                                <TextBlock
                                         Grid.Column="0"
                                         Margin="2"
                                         Foreground="Black"
                                         Text="{Binding Path=ID, StringFormat={}VESC ID: {0}}"/>
 
-                                            <TextBlock
+                                                    <TextBlock
                                         Grid.Column="0"
                                         Margin="2"
                                         Foreground="Black"
                                         Text="{Binding Path=Info.Hw, StringFormat={}  HW: {0}}"/>
 
-                                        </StackPanel>
-                                        <Label Content="{Binding Path=StatusText, Mode=TwoWay}"/>
+                                                </StackPanel>
+                                                <Label Content="{Binding Path=StatusText, Mode=TwoWay}"/>
 
 
-                                    </StackPanel>
-                                    
-                                    <StackPanel 
+                                            </StackPanel>
+
+                                            <StackPanel 
                                         HorizontalAlignment="Right"
                                         Grid.Column="1"
                                         Orientation="Horizontal">
-                                        <ComboBox 
+                                                <ComboBox 
                                             SelectedItem="{Binding Path=SelectedPort}"
                                             Margin="2 2 40 2"
                                             Width="150" 
                                             ItemsSource="{Binding Path=PortList}"/>
-                                       
-                                        <Button
+
+                                                <Button
                                              Margin="2"
                                              Content="Connect"
                                              Command="{Binding DataContext.ConnectPort, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                              CommandParameter="{Binding}"
                                             />
-                                        <Button
+                                                <Button
                                              Margin="2"
                                              Content="Disconnect"
                                              Command="{Binding DataContext.DisconnectPort, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                              CommandParameter="{Binding}"
                                             />
-                                        <Button
+                                                <Button
                                              Margin="2"
                                              Command="{Binding DataContext.RemoveVesc, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                              CommandParameter="{Binding}">
-                                            <materialDesign:PackIcon Kind="Delete"  Width="25" Height="25"/>
-                                        </Button>
+                                                    <materialDesign:PackIcon Kind="Delete"  Width="25" Height="25"/>
+                                                </Button>
 
 
-                                    </StackPanel>
-                                </UniformGrid>
-                            </Expander.Header>
-                            
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
+                                            </StackPanel>
+                                        </UniformGrid>
+                                    </Expander.Header>
 
-                                <StackPanel 
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel 
                                     Grid.ColumnSpan="2"
                                     Grid.Row="0"
                                     Grid.Column="0"
@@ -131,7 +146,7 @@
                                     HorizontalAlignment="Center"
                                     >
 
-                                    <!--<Button
+                                            <!--<Button
                                         Margin="2"
                                         
                                         Command="{Binding DataContext.SetDuty, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
@@ -140,25 +155,25 @@
                                         <materialDesign:PackIcon Kind="Send"  Width="25" Height="25"/>
                                     </Button>-->
 
-                                    <Button
+                                            <Button
                                         Background="Green"
                                         Margin="2">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                                <i:InvokeCommandAction Command="{Binding Path=DataContext.StartReverseDuty, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
-                                            </i:EventTrigger>
-                                            <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                                <i:InvokeCommandAction Command="{Binding Path=DataContext.StopDuty, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                        <materialDesign:PackIcon Kind="ArrowLeft"  Width="25" Height="25"/>
-                                    </Button>
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                                        <i:InvokeCommandAction Command="{Binding Path=DataContext.StartReverseDuty, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                                    </i:EventTrigger>
+                                                    <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                                        <i:InvokeCommandAction Command="{Binding Path=DataContext.StopDuty, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                                <materialDesign:PackIcon Kind="ArrowLeft"  Width="25" Height="25"/>
+                                            </Button>
 
 
-                                    <!--<TextBlock 
+                                            <!--<TextBlock 
                                          Margin="5"
                                         Text="{Binding Path=Duty, StringFormat={}Duty : {0:0.####},Mode=TwoWay}"/>-->
-                                    <TextBox
+                                            <TextBox
                                         Margin="5"
                                         Width="50"
                                         IsEnabled="False"
@@ -167,20 +182,20 @@
                                         Style="{StaticResource MaterialDesignTextBox}"
                                         Text="{Binding Path=Duty, Mode=TwoWay}"/>
 
-                                    <Button
+                                            <Button
                                         Background="Green"
                                         Margin="2">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                                <i:InvokeCommandAction Command="{Binding Path=DataContext.StartForwardDuty, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
-                                            </i:EventTrigger>
-                                            <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                                <i:InvokeCommandAction Command="{Binding Path=DataContext.StopDuty, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                        <materialDesign:PackIcon Kind="ArrowRight"  Width="25" Height="25"/>
-                                    </Button>
-                                    <!--<TextBlock 
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                                        <i:InvokeCommandAction Command="{Binding Path=DataContext.StartForwardDuty, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                                    </i:EventTrigger>
+                                                    <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                                        <i:InvokeCommandAction Command="{Binding Path=DataContext.StopDuty, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                                <materialDesign:PackIcon Kind="ArrowRight"  Width="25" Height="25"/>
+                                            </Button>
+                                            <!--<TextBlock 
                                          Margin="5"
                                         Text="RPM : "/>
                                     <TextBox
@@ -216,7 +231,7 @@
                                         >
                                         <materialDesign:PackIcon Kind="Send"  Width="25" Height="25"/>
                                     </Button>-->
-                                    <!--<TextBlock 
+                                            <!--<TextBlock 
                                        Margin="5"
                                        Text="Slowdown : "/>
                                     <TextBox
@@ -235,71 +250,80 @@
                                         <materialDesign:PackIcon Kind="SpeedometerSlow"  Width="25" Height="25"/>
                                     </Button>-->
 
-                                    <Button 
+                                            <Button 
                                         Margin="5"
                                         Background="Red"
                                         
                                         Command="{Binding DataContext.BrakeVesc, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                         CommandParameter="{Binding}"
                                         >
-                                        <materialDesign:PackIcon Kind="Stop"  Width="25" Height="25"/>
-                                    </Button>
-                                    
-                                    <ComboBox 
+                                                <materialDesign:PackIcon Kind="Stop"  Width="25" Height="25"/>
+                                            </Button>
+
+                                            <ComboBox 
                                             SelectedItem="{Binding Path=SynchVesc}"
                                             DisplayMemberPath="Name"
-                                            Margin="2 2 40 2"
+                                            Margin="2 12 10 2"
                                             Width="150" 
                                             ItemsSource="{Binding DataContext.VescList, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>
 
 
-                                </StackPanel>
+                                            <Button 
+                                        Margin="2"
+                                       
+                                        Command="{Binding DataContext.RemoveSyncVesc, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                        CommandParameter="{Binding}"
+                                        >
+                                                <materialDesign:PackIcon Kind="Close"  Width="25" Height="25"/>
+                                            </Button>
 
-                                <materialDesign:Card 
+                                        </StackPanel>
+
+                                        <materialDesign:Card 
                                     Grid.Row="1"
                                     Grid.ColumnSpan="2"
                                     VerticalAlignment="Stretch"
                                     >
-                                    <StackPanel
+                                            <StackPanel
                                         Margin="5"
                                         Orientation="Vertical"
                                         >
-                                        <CheckBox 
+                                                <CheckBox 
                                             Content="Real time data"
                                             IsChecked="{Binding Path=IsRealTimeData}"
                                             />
-                                        <WrapPanel>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_mos, StringFormat={}Temp_mos : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_motor, StringFormat={}Temp_motor : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Current_motor, StringFormat={}Current_motor : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Current_in, StringFormat={}Current_in : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.id, StringFormat={}id : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.iq, StringFormat={}iq : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Duty_now, StringFormat={}Duty_now : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Rpm, StringFormat={}Rpm : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.V_in, StringFormat={}V_in : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Amp_hours, StringFormat={}Amp_hours : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Amp_hours_charged, StringFormat={}Amp_hours_charged : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Watt_hours, StringFormat={}Watt_hours : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Watt_hours_charged, StringFormat={}Watt_hours_charged : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Tachometer, StringFormat={}Tachometer : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Tachometer_abs, StringFormat={}Tachometer_abs : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Fault_code, StringFormat={}Fault_code : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Fault_str, StringFormat={}Fault_str : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Position, StringFormat={}Position : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Vesc_id, StringFormat={}Vesc_id : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_mos_1, StringFormat={}Temp_mos_1 : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_mos_2, StringFormat={}Temp_mos_2 : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_mos_3, StringFormat={}Temp_mos_3 : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.vd, StringFormat={}vd : {0} }"/>
-                                            <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.vq, StringFormat={}vq : {0} }"/>
-                                        </WrapPanel>
-                                    </StackPanel>
+                                                <WrapPanel>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_mos, StringFormat={}Temp_mos : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_motor, StringFormat={}Temp_motor : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Current_motor, StringFormat={}Current_motor : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Current_in, StringFormat={}Current_in : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.id, StringFormat={}id : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.iq, StringFormat={}iq : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Duty_now, StringFormat={}Duty_now : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Rpm, StringFormat={}Rpm : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.V_in, StringFormat={}V_in : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Amp_hours, StringFormat={}Amp_hours : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Amp_hours_charged, StringFormat={}Amp_hours_charged : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Watt_hours, StringFormat={}Watt_hours : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Watt_hours_charged, StringFormat={}Watt_hours_charged : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Tachometer, StringFormat={}Tachometer : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Tachometer_abs, StringFormat={}Tachometer_abs : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Fault_code, StringFormat={}Fault_code : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Fault_str, StringFormat={}Fault_str : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Position, StringFormat={}Position : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Vesc_id, StringFormat={}Vesc_id : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_mos_1, StringFormat={}Temp_mos_1 : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_mos_2, StringFormat={}Temp_mos_2 : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_mos_3, StringFormat={}Temp_mos_3 : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.vd, StringFormat={}vd : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.vq, StringFormat={}vq : {0} }"/>
+                                                </WrapPanel>
+                                            </StackPanel>
 
-                                </materialDesign:Card>
+                                        </materialDesign:Card>
 
 
-                                <!--<customControls:MaterialNumericUpDown
+                                        <!--<customControls:MaterialNumericUpDown
                          
                                         Title=" Duty : "
                                         Grid.Column="1"
@@ -308,21 +332,16 @@
                                         Minimum="0"
                                         Value="{Binding Path=Duty, Mode=TwoWay}"
                                         />-->
-                            </Grid>
+                                    </Grid>
 
-                        </Expander>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                                </Expander>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
 
 
-        </ScrollViewer>
-    </Grid>
-
-    
-    
-            
-    
-    
+                </ScrollViewer>
+            </Grid>
+        </Grid>
 
 </Window>

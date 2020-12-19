@@ -10,6 +10,7 @@ using System.Windows.Threading;
 using VescConnector;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows.Media;
 
 namespace VescConnector
 {
@@ -17,20 +18,42 @@ namespace VescConnector
     {
         public int ID { get; set; }
         public bool NegativeRotation { get; set; }
-
         public string Name => string.Format("VESC ID: {0}", ID);
+
         private SerialPort port = new SerialPort();
         private System.Threading.SynchronizationContext CurrentContext { get; } = System.Threading.SynchronizationContext.Current;
         public string StatusText { get; set; } = String.Empty;
+
         private DispatcherTimer realDataTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(10) };
 
         private DispatcherTimer DutyTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(10) };
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        //private List<OxyPlot.OxyColor> Color = new List<OxyPlot.OxyColor>()
+        //{
+        //    OxyPlot.OxyColors.Red,
+        //    OxyPlot.OxyColors.Cyan,
+        //    OxyPlot.OxyColors.Green,
+        //    OxyPlot.OxyColors.Blue,
+        //    OxyPlot.OxyColors.Black
+        //};
+
+        private List<Brush> Color = new List<Brush>()
+        {
+            Brushes.Red,
+            Brushes.Blue,
+            Brushes.Green,
+            Brushes.Brown,
+            Brushes.Black
+        };
+
+        public Brush ChartColor { get; private set; }
         public string SelectedPort { get; set; }
+
         private double currentDuty;
-        public double SlowDownValue { get; set; }
+
+     //   public double SlowDownValue { get; set; }
 
         public RealTimeData RealTimeData { get; set; }
 
@@ -67,6 +90,8 @@ namespace VescConnector
             realDataTimer.Start();
             timeWatcher.Start();
             DutyTimer.Tick += DutyTimer_Tick;
+            if (id > Color.Count-1) id = 0;
+            ChartColor = Color[id];
         }
 
        
@@ -311,8 +336,8 @@ namespace VescConnector
 
         public void SetDutyCycle(double dutyCycle)
         {
-            if (Math.Abs(dutyCycle) > 0.6d) return;
-          //  currentDuty = dutyCycle < 0.0 ? currentDuty - (1d / deltaTime) : currentDuty + (1d / deltaTime);
+            if (Math.Abs(dutyCycle) > 0.6d)   return; 
+            //  currentDuty = dutyCycle < 0.0 ? currentDuty - (1d / deltaTime) : currentDuty + (1d / deltaTime);
             ByteArray arr = new ByteArray();
             arr.AppendInt8((byte)COMM_PACKET_ID.COMM_SET_DUTY);
             arr.AppendDouble32(dutyCycle, 1e5);
