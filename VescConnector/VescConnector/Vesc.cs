@@ -24,11 +24,13 @@ namespace VescConnector
         private System.Threading.SynchronizationContext CurrentContext { get; } = System.Threading.SynchronizationContext.Current;
         public string StatusText { get; set; } = String.Empty;
 
-        private DispatcherTimer realDataTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(10) };
+        private DispatcherTimer realDataTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(5) };
 
-        private DispatcherTimer DutyTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(10) };
+        private DispatcherTimer DutyTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(5) };
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public double Delta { get; set; }
 
         //private List<OxyPlot.OxyColor> Color = new List<OxyPlot.OxyColor>()
         //{
@@ -98,7 +100,9 @@ namespace VescConnector
 
         private void RealDataTimer_Tick(object sender, EventArgs e)
         {
-            deltaTime = 0.005d / realDataTimer.Interval.TotalMilliseconds;
+             deltaTime = 0.005d / realDataTimer.Interval.TotalMilliseconds;
+            //deltaTime = 0.005d / 50d;
+           // deltaTime = 0;
             if (IsRealTimeData) GetValues();
 
             if (lastPacket != null && SynchVesc == null)
@@ -120,9 +124,14 @@ namespace VescConnector
                 {
                     if (SynchVesc.RealTimeData.Duty_now != 0)
                     {
-                        double duty = -SynchVesc.RealTimeData.Rpm * 0.000545d;
+                       double rp = 0.000545d;
+                      //  double rp = 0.00048d;
+                        double duty = -SynchVesc.RealTimeData.Rpm * rp;
+                       // double duty = -SynchVesc.RealTimeData.Duty_now;
+                        Delta = Math.Abs(SynchVesc.RealTimeData.Rpm -RealTimeData.Rpm);
                         SetDutyCycle(duty);
                         sendCommand(lastPacket);
+
                     }
                 }
             }
@@ -172,8 +181,8 @@ namespace VescConnector
                 port.DataBits = 8;
                 port.Parity = Parity.None;
                 port.StopBits = StopBits.One;
-                port.RtsEnable = true;
-              //  port.Encoding = Encoding.UTF8;
+               // port.RtsEnable = true;
+                port.Encoding = Encoding.UTF8;
                 port.DataReceived += Port_DataReceived;
                 port.ErrorReceived += Port_ErrorReceived;
                 try
@@ -192,11 +201,18 @@ namespace VescConnector
 
         public void SendData(ByteArray packet)
         {
-            byte[] arr = Packet.Create(packet.data.ToArray());
-            if (port.IsOpen)
+            try
             {
-                port.Write(arr, 0, arr.Length);
+                if (packet != null)
+                {
+                    byte[] arr = Packet.Create(packet.data.ToArray());
+                    if (port.IsOpen)
+                    {
+                        port.Write(arr, 0, arr.Length);
+                    }
+                }
             }
+            catch { }
         }
 
         private void Port_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
@@ -207,8 +223,14 @@ namespace VescConnector
         private void Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             SerialPort sp = (SerialPort)sender;
-           // ProcessPacket(new ByteArray(sp.));
-            ProcessPacket(new ByteArray(sp.ReadExisting()));
+            // ProcessPacket(new ByteArray(sp.));
+         //   ProcessPacket(new ByteArray(sp.ReadExisting()));
+
+            int bytes = port.BytesToRead;
+            byte[] buffer = new byte[bytes];
+            port.Read(buffer, 0, bytes);
+
+            ProcessPacket(new ByteArray(buffer));
         }
 
 
@@ -254,6 +276,7 @@ namespace VescConnector
                         values.Duty_now = packet.PopFrontDouble16(1e3);
 
                         values.Rpm = packet.PopFrontDouble32(1e0) / 11;
+                        if (values.Rpm > 10000) values.Rpm = 0;
                         values.V_in = packet.PopFrontDouble16(1e1) * values.Current_in;
                         values.Amp_hours = packet.PopFrontDouble32(1e4);
                         values.Amp_hours_charged = packet.PopFrontDouble32(1e4);
@@ -324,7 +347,10 @@ namespace VescConnector
 
         private void DutyTimer_Tick(object sender, EventArgs e)
         {
-            currentDuty = NegativeRotation && Math.Abs(currentDuty) < 0.7d ? currentDuty - (0.02d / DutyTimer.Interval.TotalMilliseconds) : currentDuty + (0.02d / DutyTimer.Interval.TotalMilliseconds);
+              currentDuty = NegativeRotation && Math.Abs(currentDuty) < 0.7d  ? currentDuty - (0.02d / DutyTimer.Interval.TotalMilliseconds) : currentDuty + (0.02d / DutyTimer.Interval.TotalMilliseconds);
+           // currentDuty = NegativeRotation?  -0.04d : 0.04d;
+
+
             ByteArray arr = new ByteArray();
             arr.AppendInt8((byte)COMM_PACKET_ID.COMM_SET_DUTY);
             arr.AppendDouble32(currentDuty, 1e5);
@@ -336,8 +362,8 @@ namespace VescConnector
 
         public void SetDutyCycle(double dutyCycle)
         {
-            if (Math.Abs(dutyCycle) > 0.6d)   return; 
-            //  currentDuty = dutyCycle < 0.0 ? currentDuty - (1d / deltaTime) : currentDuty + (1d / deltaTime);
+            if (Math.Abs(dutyCycle) > 0.7d)   return; 
+           //  currentDuty = dutyCycle < 0.0 ? currentDuty - (1d / deltaTime) : currentDuty + (1d / deltaTime);
             ByteArray arr = new ByteArray();
             arr.AppendInt8((byte)COMM_PACKET_ID.COMM_SET_DUTY);
             arr.AppendDouble32(dutyCycle, 1e5);

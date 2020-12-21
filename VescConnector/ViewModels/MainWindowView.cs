@@ -190,6 +190,9 @@ namespace VescConnector.ViewModels
             ChartTimer.Tick += ChartTimer_Tick;
             ChartTimer.Start();
 
+          // var g =  ((ushort)(16191) ^ -1) + 1;
+
+
             //double duty1 = -0.1d * 1e3;
 
             //byte[] str = BitConverter.GetBytes(duty1);
@@ -210,7 +213,7 @@ namespace VescConnector.ViewModels
 
             for (int i = 0; i < VescList.Count  ; i++)
             {
-                Chart.LineSeries[i].Points.Add(new OxyPlot.DataPoint(x, VescList[i].RealTimeData.Rpm));
+                    Chart.LineSeries[i].Points.Add(new OxyPlot.DataPoint(x, Math.Abs( VescList[i].RealTimeData.Rpm)));
             }
 
             if (Chart.LineSeries[0].Points.Count > 200)

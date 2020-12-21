@@ -293,16 +293,17 @@
                                             IsChecked="{Binding Path=IsRealTimeData}"
                                             />
                                                 <WrapPanel>
-                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_mos, StringFormat={}Temp_mos : {0} }"/>
+                                                    <!--<TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_mos, StringFormat={}Temp_mos : {0} }"/>
                                                     <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_motor, StringFormat={}Temp_motor : {0} }"/>
                                                     <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Current_motor, StringFormat={}Current_motor : {0} }"/>
                                                     <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Current_in, StringFormat={}Current_in : {0} }"/>
                                                     <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.id, StringFormat={}id : {0} }"/>
-                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.iq, StringFormat={}iq : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.iq, StringFormat={}iq : {0} }"/>-->
                                                     <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Duty_now, StringFormat={}Duty_now : {0} }"/>
                                                     <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Rpm, StringFormat={}Rpm : {0} }"/>
                                                     <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.V_in, StringFormat={}V_in : {0} }"/>
-                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Amp_hours, StringFormat={}Amp_hours : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=Delta, StringFormat={}Delta rpm : {0} }"/>
+                                                <!--<TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Amp_hours, StringFormat={}Amp_hours : {0} }"/>
                                                     <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Amp_hours_charged, StringFormat={}Amp_hours_charged : {0} }"/>
                                                     <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Watt_hours, StringFormat={}Watt_hours : {0} }"/>
                                                     <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Watt_hours_charged, StringFormat={}Watt_hours_charged : {0} }"/>
@@ -316,7 +317,7 @@
                                                     <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_mos_2, StringFormat={}Temp_mos_2 : {0} }"/>
                                                     <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.Temp_mos_3, StringFormat={}Temp_mos_3 : {0} }"/>
                                                     <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.vd, StringFormat={}vd : {0} }"/>
-                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.vq, StringFormat={}vq : {0} }"/>
+                                                    <TextBlock Margin="5" Width="150" Background="GhostWhite" Text="{Binding Path=RealTimeData.vq, StringFormat={}vq : {0} }"/>-->
                                                 </WrapPanel>
                                             </StackPanel>
 

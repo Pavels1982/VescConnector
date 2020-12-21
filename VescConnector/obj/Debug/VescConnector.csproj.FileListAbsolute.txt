@@ -57,3 +57,11 @@ C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\OxyPlot.Wpf.dl
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\OxyPlot.xml
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\bin\Debug\OxyPlot.Wpf.xml
 C:\Users\Pavel\Desktop\Work\VescConnector\VescConnector\obj\Debug\VescConnector.csprojAssemblyReference.cache
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\Microsoft.Expression.Interactions.dll
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\OxyPlot.dll
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\OxyPlot.Wpf.dll
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\System.Windows.Interactivity.dll
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\Microsoft.Expression.Interactions.xml
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\OxyPlot.xml
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\OxyPlot.Wpf.xml
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\System.Windows.Interactivity.xml

@@ -34,6 +34,11 @@ namespace VescConnector
         {
             this.data = Encoding.Default.GetBytes(data).ToList();
         }
+
+        public ByteArray(byte[] data)
+        {
+            this.data = data.ToList();
+        }
         #endregion
 
 
@@ -124,6 +129,7 @@ namespace VescConnector
                 return 0;
             }
 
+            
             UInt32 res = (UInt32)(data[0] << 24 | data[1] << 16 | data[2] << 8 | data[3]);
             this.data.RemoveRange(0, 4);
             return res;
@@ -203,12 +209,14 @@ namespace VescConnector
         }
         public double PopFrontDouble32(double scale)
         {
-            return PopFrontInt32toDouble() / scale;
+           // return PopFrontInt32toDouble() / scale;
+            return (double)PopFrontInt32() / scale;
         }
 
         public double PopFrontDouble16(double scale)
         {
-            return PopFrontInt16toDouble() / scale;
+          //  return PopFrontInt16toDouble() / scale;
+            return (double)PopFrontInt16() / scale;
         }
 
         public string PopFrontString()
