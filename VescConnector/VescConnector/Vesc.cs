@@ -125,13 +125,23 @@ namespace VescConnector
                     if (SynchVesc.RealTimeData.Duty_now != 0)
                     {
                        double rp = 0.000545d;
-                      //  double rp = 0.00048d;
-                        double duty = -SynchVesc.RealTimeData.Rpm * rp;
-                       // double duty = -SynchVesc.RealTimeData.Duty_now;
-                        Delta = Math.Abs(SynchVesc.RealTimeData.Rpm -RealTimeData.Rpm);
+                        //  double rp = 0.00048d;
+                        Delta = Math.Abs(Math.Abs(SynchVesc.RealTimeData.Rpm) - Math.Abs(RealTimeData.Rpm));
+                       // Delta = Math.Abs(Math.Abs(RealTimeData.Rpm) - Math.Abs(SynchVesc.RealTimeData.Rpm));
+                        double after = 0;
+                        // if (Math.Abs(RealTimeData.Duty_now) > 0.04d) after = Delta;
+                       // if (RealTimeData.Rpm < lastRpm) after = Delta;
+
+                        double duty = -(SynchVesc.RealTimeData.Rpm) * rp;
+
+                        //    if (Math.Abs(RealTimeData.Duty_now) > 0.03d) duty += Delta * rp;
+
+                        //    Debug.WriteLine(String.Format("duty = {0} : after = {1}", duty, after));
+                        //  double duty = -(SynchVesc.RealTimeData.Rpm - Delta) * rp;
+                        //    double duty = -SynchVesc.RealTimeData.Duty_now;
                         SetDutyCycle(duty);
                         sendCommand(lastPacket);
-
+                       
                     }
                 }
             }
@@ -139,6 +149,7 @@ namespace VescConnector
             //timeWatcher.Restart();
         }
 
+        private double lastRpm;
         public bool IsConnected;
 
         //private void RealtimeDataOn()
@@ -319,6 +330,7 @@ namespace VescConnector
                             values.vq = packet.PopFrontDouble16(1e3);
 
                         }
+                        lastRpm = RealTimeData.Rpm;
                         RealTimeData = values;
                     }
                     break;
