@@ -19,6 +19,9 @@ namespace VescConnector
         public int ID { get; set; }
         public bool NegativeRotation { get; set; }
         public string Name => string.Format("VESC ID: {0}", ID);
+        private double lastRpm { get; set; }
+        public bool IsConnected;
+        public bool isIncrease { get; set; }
 
         private SerialPort port = new SerialPort();
         private System.Threading.SynchronizationContext CurrentContext { get; } = System.Threading.SynchronizationContext.Current;
@@ -124,21 +127,18 @@ namespace VescConnector
                 {
                     if (SynchVesc.RealTimeData.Duty_now != 0)
                     {
-                       double rp = 0.000545d;
-                        //  double rp = 0.00048d;
+                      // double oneRateInDuty = 0.000545d;
                         Delta = Math.Abs(Math.Abs(SynchVesc.RealTimeData.Rpm) - Math.Abs(RealTimeData.Rpm));
-                       // Delta = Math.Abs(Math.Abs(RealTimeData.Rpm) - Math.Abs(SynchVesc.RealTimeData.Rpm));
-                        double after = 0;
-                        // if (Math.Abs(RealTimeData.Duty_now) > 0.04d) after = Delta;
-                       // if (RealTimeData.Rpm < lastRpm) after = Delta;
 
-                        double duty = -(SynchVesc.RealTimeData.Rpm) * rp;
+                        // double duty = -(SynchVesc.RealTimeData.Rpm) * rp;
 
-                        //    if (Math.Abs(RealTimeData.Duty_now) > 0.03d) duty += Delta * rp;
+                        double offSet = isIncrease ? 0 : (SynchVesc.RealTimeData.Duty_now / 100d * 1.3d);
 
-                        //    Debug.WriteLine(String.Format("duty = {0} : after = {1}", duty, after));
-                        //  double duty = -(SynchVesc.RealTimeData.Rpm - Delta) * rp;
-                        //    double duty = -SynchVesc.RealTimeData.Duty_now;
+                       // double duty = -(SynchVesc.RealTimeData.Duty_now - (SynchVesc.RealTimeData.Duty_now / 100d * 1.3d));
+                        double duty = -(SynchVesc.RealTimeData.Duty_now - offSet);
+                      
+                        //   double duty = -(SynchVesc.RealTimeData.Duty_now);
+
                         SetDutyCycle(duty);
                         sendCommand(lastPacket);
                        
@@ -149,8 +149,6 @@ namespace VescConnector
             //timeWatcher.Restart();
         }
 
-        private double lastRpm;
-        public bool IsConnected;
 
         //private void RealtimeDataOn()
         //{
@@ -287,7 +285,14 @@ namespace VescConnector
                         values.Duty_now = packet.PopFrontDouble16(1e3);
 
                         values.Rpm = packet.PopFrontDouble32(1e0) / 11;
-                        if (values.Rpm > 10000) values.Rpm = 0;
+
+                        double h = Math.Abs(values.Rpm);
+
+                        if (h > lastRpm)  isIncrease = true;  else  isIncrease = false; 
+                        lastRpm = h;
+                       // Debug.WriteLine(lastRpm);
+
+                        //  if (values.Rpm > 10000) values.Rpm = 0;
                         values.V_in = packet.PopFrontDouble16(1e1) * values.Current_in;
                         values.Amp_hours = packet.PopFrontDouble32(1e4);
                         values.Amp_hours_charged = packet.PopFrontDouble32(1e4);
@@ -330,7 +335,7 @@ namespace VescConnector
                             values.vq = packet.PopFrontDouble16(1e3);
 
                         }
-                        lastRpm = RealTimeData.Rpm;
+                      //  lastRpm = RealTimeData.Rpm;
                         RealTimeData = values;
                     }
                     break;
