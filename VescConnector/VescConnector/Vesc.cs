@@ -11,6 +11,9 @@ using VescConnector;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Media;
+using System.IO;
+using System.Threading;
+using Newtonsoft.Json;
 
 namespace VescConnector
 {
@@ -35,14 +38,6 @@ namespace VescConnector
 
         public double Delta { get; set; }
 
-        //private List<OxyPlot.OxyColor> Color = new List<OxyPlot.OxyColor>()
-        //{
-        //    OxyPlot.OxyColors.Red,
-        //    OxyPlot.OxyColors.Cyan,
-        //    OxyPlot.OxyColors.Green,
-        //    OxyPlot.OxyColors.Blue,
-        //    OxyPlot.OxyColors.Black
-        //};
 
         private List<Brush> Color = new List<Brush>()
         {
@@ -58,8 +53,6 @@ namespace VescConnector
 
         private double currentDuty;
 
-     //   public double SlowDownValue { get; set; }
-
         public RealTimeData RealTimeData { get; set; }
 
         public VescInfo Info { get; set; }
@@ -71,6 +64,7 @@ namespace VescConnector
         public int RPM { get; set; }
 
         public double Current { get; set; }
+
         public bool IsRealTimeData { get; set; } = true;
 
         private ByteArray lastPacket;
@@ -99,25 +93,49 @@ namespace VescConnector
             ChartColor = Color[id];
         }
 
-       
+        private bool isConnectionMode;
+
+        public void ConnectingMode()
+        {
+            if (!this.isConnectionMode && Math.Abs(RealTimeData.Duty_now) < 0.04d)
+            {
+                this.isConnectionMode = true;
+                Task.Factory.StartNew(() =>
+                {
+
+                    for (int i = 0; i < 6; i++)
+                    {
+                        if (RealTimeData.Duty_now <= 0) SetDutyCycle(0.03d); else SetDutyCycle(-0.03d);
+                        sendCommand(lastPacket);
+                        Thread.Sleep(280);
+                    }
+                    SetDutyCycle(0.0d);
+                    sendCommand(lastPacket);
+                    this.isConnectionMode = false;
+                });
+            }
+        }
+
 
         private void RealDataTimer_Tick(object sender, EventArgs e)
         {
              deltaTime = 0.005d / realDataTimer.Interval.TotalMilliseconds;
-            //deltaTime = 0.005d / 50d;
-           // deltaTime = 0;
             if (IsRealTimeData) GetValues();
 
             if (lastPacket != null && SynchVesc == null)
-                {
+            {
 
-                //   if (RealTimeData.Duty_now != 0)
-                   if (Duty != 0.0d)
-                   {
-                      currentDuty += currentDuty < 0.0 ? deltaTime : -deltaTime;
-                      SetDutyCycle(currentDuty);
-                      sendCommand(lastPacket);
-                   }
+
+                if (Duty != 0 && !isConnectionMode)
+                {
+                    currentDuty += currentDuty < 0.0 ? deltaTime : -deltaTime;
+
+                    if (Math.Abs(RealTimeData.Duty_now) == 0.001d) currentDuty = 0;
+
+                    SetDutyCycle(currentDuty);
+                    sendCommand(lastPacket);
+                }
+
 
             }
             else if (SynchVesc != null)
@@ -135,9 +153,9 @@ namespace VescConnector
                         double offSet = isIncrease ? 0 : (SynchVesc.RealTimeData.Duty_now / 100d * 1.3d);
 
                        // double duty = -(SynchVesc.RealTimeData.Duty_now - (SynchVesc.RealTimeData.Duty_now / 100d * 1.3d));
-                        double duty = -(SynchVesc.RealTimeData.Duty_now - offSet);
+                     //   double duty = -(SynchVesc.RealTimeData.Duty_now - offSet);
                       
-                        //   double duty = -(SynchVesc.RealTimeData.Duty_now);
+                           double duty = -(SynchVesc.RealTimeData.Duty_now);
 
                         SetDutyCycle(duty);
                         sendCommand(lastPacket);
@@ -146,19 +164,8 @@ namespace VescConnector
                 }
             }
             Duty = currentDuty;
-            //timeWatcher.Restart();
         }
 
-
-        //private void RealtimeDataOn()
-        //{
-        //    if (!realDataTimer.IsEnabled) realDataTimer.Start();
-        //}
-
-        //private void RealtimeDataOff()
-        //{
-        //    if (realDataTimer.IsEnabled) realDataTimer.Stop();
-        // }
 
         public void Disconnect()
         {
@@ -288,9 +295,24 @@ namespace VescConnector
 
                         double h = Math.Abs(values.Rpm);
 
-                        if (h > lastRpm)  isIncrease = true;  else  isIncrease = false; 
+                        if (h > lastRpm)  isIncrease = true;  else  isIncrease = false;
                         lastRpm = h;
-                       // Debug.WriteLine(lastRpm);
+
+                        //if (SynchVesc == null && values.Duty_now > 0.02)
+
+                        //    using (StreamWriter sw = new StreamWriter("main.csv", true, System.Text.Encoding.Default))
+                        //    {
+                        //        sw.WriteLine("{0};", values.Duty_now);
+                        //    };
+
+                        //if (SynchVesc != null && values.Duty_now > 0.02)
+
+                        //    using (StreamWriter sw = new StreamWriter("second.csv", true, System.Text.Encoding.Default))
+                        //    {
+                        //        sw.WriteLine("{0};", values.Duty_now);
+                        //    };
+
+                        // Debug.WriteLine(lastRpm);
 
                         //  if (values.Rpm > 10000) values.Rpm = 0;
                         values.V_in = packet.PopFrontDouble16(1e1) * values.Current_in;

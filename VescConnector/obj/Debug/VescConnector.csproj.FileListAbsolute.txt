@@ -65,3 +65,5 @@ D:\Рабочая\VescConnector\VescConnector\bin\Debug\Microsoft.Expression.Int
 D:\Рабочая\VescConnector\VescConnector\bin\Debug\OxyPlot.xml
 D:\Рабочая\VescConnector\VescConnector\bin\Debug\OxyPlot.Wpf.xml
 D:\Рабочая\VescConnector\VescConnector\bin\Debug\System.Windows.Interactivity.xml
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\Newtonsoft.Json.dll
+D:\Рабочая\VescConnector\VescConnector\bin\Debug\Newtonsoft.Json.xml

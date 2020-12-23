@@ -13,6 +13,7 @@
         TextElement.Foreground = "{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
+        Closed="Window_Closed"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         Title="MainWindow" Height="576.53" Width="824.545">
     <Grid>
@@ -261,23 +262,33 @@
                                             </Button>
 
                                             <ComboBox 
-                                            SelectedItem="{Binding Path=SynchVesc}"
+                                            SelectedItem="{Binding Path=SynchVesc,Mode=TwoWay}"
                                             DisplayMemberPath="Name"
                                             Margin="2 12 10 2"
                                             Width="150" 
+                                            SelectedValue="{Binding Path=SynchVesc}"
                                             ItemsSource="{Binding DataContext.VescList, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>
 
 
-                                            <Button 
+                                        <Button 
                                         Margin="2"
                                        
                                         Command="{Binding DataContext.RemoveSyncVesc, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                         CommandParameter="{Binding}"
                                         >
-                                                <materialDesign:PackIcon Kind="Close"  Width="25" Height="25"/>
-                                            </Button>
+                                            <materialDesign:PackIcon Kind="Close"  Width="25" Height="25"/>
+                                        </Button>
 
-                                        </StackPanel>
+                                        <Button 
+                                        Margin="2"
+                                       
+                                        Command="{Binding DataContext.ConnectingCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                        CommandParameter="{Binding}"
+                                        >
+                                            <materialDesign:PackIcon Kind="Connection"  Width="25" Height="25"/>
+                                        </Button>
+
+                                    </StackPanel>
 
                                         <materialDesign:Card 
                                     Grid.Row="1"

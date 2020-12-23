@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
 using VescConnector.Services;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace VescConnector.ViewModels
 {
@@ -15,6 +17,8 @@ namespace VescConnector.ViewModels
     {
         public ObservableCollection<Vesc> VescList { get; set; }= new ObservableCollection<Vesc>();
         private DispatcherTimer ChartTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(20) };
+
+        private string dataFileName = "data.bin";
 
         public Chart Chart { get; set; } = new Chart();
 
@@ -150,6 +154,19 @@ namespace VescConnector.ViewModels
             }
         }
 
+        public ICommand ConnectingCommand
+        {
+            get
+            {
+                return new RelayCommand<Vesc>((vesc) =>
+                {
+
+                        vesc.ConnectingMode();
+        
+                });
+            }
+        }
+
 
         public ICommand BrakeVesc
         {
@@ -185,25 +202,93 @@ namespace VescConnector.ViewModels
             }
         }
 
+
+        public void SaveData()
+        {
+            if (VescList != null)
+            {
+                foreach (var item in VescList)
+                {
+                    item.Brake();
+                    item.SelectedPort = null;
+                    item.StatusText = String.Empty;
+                    item.SynchVesc = null;
+                    item.Disconnect();
+                }
+
+                SaveDataTo(VescList, this.dataFileName);
+
+
+            }
+        }
+
+
+
+        /// <summary>
+        /// Метод сериализации и сохранения объекта в файл.
+        /// </summary>
+        /// <param name="obj">Сериализуемый объект.</param>
+        /// <param name="fileName">Имя файла.</param>
+        public static void SaveDataTo(object obj, string fileName)
+        {
+            try
+            {
+                using (StreamWriter file = File.CreateText(fileName))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Serialize(file, obj);
+                    file.Close();
+                }
+
+            }
+            catch
+            { }
+
+        }
+
+        /// <summary>
+        /// Метод десериализации объекта из файла.
+        /// </summary>
+        /// <param name="fileName">Имя файла.</param>
+        public static object ReadDataFrom<T>(string fileName)
+        {
+            if (File.Exists(fileName))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                using (StreamReader file = File.OpenText(fileName))
+                {
+                    return serializer.Deserialize(file, typeof(T));
+                }
+
+            }
+            return null;
+        }
+
+
         public MainWindowViewModel()
         {
             ChartTimer.Tick += ChartTimer_Tick;
             ChartTimer.Start();
+            if (File.Exists(this.dataFileName))
+            {
+                VescList = (ObservableCollection<Vesc>)ReadDataFrom<ObservableCollection<Vesc>>(this.dataFileName);
+                Chart.ReInitSeries(VescList);
+            }
 
           // var g =  ((ushort)(16191) ^ -1) + 1;
 
 
-            //double duty1 = -0.1d * 1e3;
+                //double duty1 = -0.1d * 1e3;
 
-            //byte[] str = BitConverter.GetBytes(duty1);
+                //byte[] str = BitConverter.GetBytes(duty1);
 
-            //Int64 res = (((Int64)str[7] << 56 ) | ((Int64)str[6]) << 48);
+                //Int64 res = (((Int64)str[7] << 56 ) | ((Int64)str[6]) << 48);
 
-            //byte[] y = BitConverter.GetBytes(res);
+                //byte[] y = BitConverter.GetBytes(res);
 
-            //double total = (double)(BitConverter.Int64BitsToDouble(res) / 1e3);
+                //double total = (double)(BitConverter.Int64BitsToDouble(res) / 1e3);
 
-            //byte[] str3 = BitConverter.GetBytes(total);
+                //byte[] str3 = BitConverter.GetBytes(total);
 
         }
 

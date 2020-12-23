@@ -1,6 +1,8 @@
-﻿namespace VescConnector
+﻿using System.ComponentModel;
+
+namespace VescConnector
 {
-    public class RealTimeData
+    public class RealTimeData: INotifyPropertyChanged
     {
         public double Temp_mos { get; set; } = 0;
         public double Temp_motor { get; set; } = 0;
@@ -27,5 +29,6 @@
         public double vd { get; set; } = 0;
         public double vq { get; set; } = 0;
 
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

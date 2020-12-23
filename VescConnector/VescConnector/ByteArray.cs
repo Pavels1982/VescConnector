@@ -147,30 +147,6 @@ namespace VescConnector
             return res;
         }
 
-        public double PopFrontInt16toDouble()
-        {
-            if (this.data.Count < 2)
-            {
-                return 0;
-            }
-
-            long res = (((long)data[0] << 56) | ((long)data[1]) << 48);
-            this.data.RemoveRange(0, 2);
-            return BitConverter.Int64BitsToDouble(res);
-        }
-
-        public double PopFrontInt32toDouble()
-        {
-            if (this.data.Count < 4)
-            {
-                return 0;
-            }
-            long res = (((long)data[0] << 56) | ((long)data[1]) << 48 | ((long)data[2]) << 40 | ((long)data[3]) << 32);
-
-            this.data.RemoveRange(0, 4);
-            return BitConverter.Int64BitsToDouble(res);
-        }
-
 
         public UInt16 PopFrontUInt16()
         {

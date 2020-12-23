@@ -16,6 +16,7 @@ using System.IO.Ports;
 using System.Threading;
 using System.Diagnostics;
 using VescConnector.ViewModels;
+using System.ComponentModel;
 
 namespace VescConnector
 {
@@ -25,15 +26,17 @@ namespace VescConnector
     public partial class MainWindow : Window
     {
 
-       public MainWindow()
+        public MainWindow()
         {
            InitializeComponent();
-            this.DataContext = new MainWindowViewModel();
+
+            this.DataContext = new MainWindowViewModel(); 
         }
 
-        private void Button_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+  
+        private void Window_Closed(object sender, EventArgs e)
         {
-            Debug.WriteLine("f");
+            (this.DataContext as MainWindowViewModel).SaveData();
         }
     }
 
